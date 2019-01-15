@@ -1,0 +1,155 @@
+{% extends 'lenotes/base.html' %} {% load bootstrap3 %}{% load staticfiles %}{% load base %} {% block header %}
+
+{% endblock header %} {% block content %}
+
+<style>
+        .ohbut {
+        display: inline-block;
+        padding: .3em .5em;
+        background-image: linear-gradient(rgb(250, 249, 249), rgb(250, 246, 246));
+        border: 1px solid rgba(0,0,0,.2);
+        border-radius: .3em;
+        box-shadow: 0 1px white inset;
+        text-align: center;
+       
+        color:rgb(8, 108, 240);
+        font-weight: bold;
+    }
+    .ohbut:active{
+        box-shadow: .05em .1em .2em rgba(6, 240, 95, 0.6) inset;
+        border-color: rgba(250, 5, 5, 0.3);
+        background: rgb(7, 84, 228);
+    }
+    
+    </style>
+
+<title>Group</title>
+<link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+<p> 
+    
+    <section class="row featured-post-carousel">
+        <div class="item post" align = "center">
+            <img src="/media/{{group.profile}}" alt="" class="img-responsive main-bg">        
+            <div class="post-content">
+                <div class="container">
+                    <h5 style="color: rgb(187, 255, 0)" class="post-meta"><i>In Group</i> #{{group.name}}</h5>
+                    <h2 class="post-title"><a style="color: rgb(28, 24, 241)"  href="{% url 'lenotes:group' group.id %} ">{{group.intro}}</a></h2>
+                </div>
+            </div>
+        </div>
+    </section>
+    </br>
+    </br>
+    
+</p>
+<li>
+    <a class="ohbut" href="{% url 'lenotes:diary_month' group.id nowYear nowMonth 2 %}" role="button">涂鸦~</a>
+    {% if lastMonthJudge %}
+    <a href="{% url 'lenotes:diary_month' group.id lastYear lastMonth 1 %}" class="ohbut">上个月</a> {% endif %} {% if nextMonthJudge %}
+    <a href="{% url 'lenotes:diary_month' group.id nextYear nextMonth 1 %}" class="ohbut">下个月</a> {% endif %} {% if createJudge %}
+    <a href="{% url 'lenotes:new_diary' group.id %}" class="ohbut">新建日记</a> {% endif %}
+</li>
+
+<div>
+    
+        <!-- <div class="timeline" style="bottom: 20px">
+            <div class="events-wrapper">
+                <div>
+                    <ol>
+                        {% for diary in odiarys %} {% if forloop.last %}
+                        <li><a href="#0" data-date="{{diary.date_added|date:'d/m/Y'}}" class="selected">{{diary.date_added|date:'m.d'}}</a></li>
+                        {% else %}
+                        <li><a href="#0" data-date="{{diary.date_added|date:'d/m/Y'}}">{{diary.date_added|date:'m.d'}}</a></li>
+                        {% endif %} {% endfor %}
+                    </ol>
+
+                    <span class="filling-line" aria-hidden="true"></span>
+                </div>
+            
+            </div>
+            
+
+            <ul class="cd-timeline-navigation">
+                <li><a href="#0" class="prev inactive">Prev</a></li>
+                <li><a href="#0" class="next">Next</a></li>
+            </ul>
+            
+        </div> -->
+        <!-- .timeline -->
+
+        <!-- <div style="margin-top: 0px">
+            <ol>
+
+                {% for diary in odiarys %} 
+                    <p>日期 {{diary.date_added|date:'d/m/Y'}}</p>
+                    <div style="width: 1200px; font-family:'Fira Sans'">
+                        {{diary.content|custom_markdown}}
+                        {{diary.diary_log}}
+                        <br/>
+                        <a href="{% url 'lenotes:edit_diary_md' diary.id %}" class="ohbut">编辑</a>
+                        <a href="{% url 'lenotes:single_diary' diary.id %}" class="ohbut">查看</a>
+                        -- <a href="{% url 'lenotes:diary_log' diary.id %}" class="ohbut">Diary log</a> --
+                    </div>
+                
+                
+                {% empty %}
+                    <div style="height: 300px;">
+                        没日记哦·····
+                    </div>
+            
+                {% endfor %}
+
+
+            </ol>
+        </div> -->
+        
+        <section class="row content-wrap">
+            <div class="container">
+                <div class="row" id="post-masonry">
+                    {% for diary in odiarys %} 
+                        <!--Blog Post-->
+                        <article class="col-sm-4 post post-masonry post-format-image">
+                            <div class="post-wrapper row">
+                                <div class="post-excerpt row">
+                                    <h5 class="post-meta">
+                                        <a class="date">{{diary.date_added|date:'d/m/Y'}}</a>
+                                    </h5>
+                                    <h3 class="post-title" ><a href="{% url 'lenotes:single_diary' diary.id %}">{{diary.content|custom_markdown}}</a></h3>
+                                    <!-- 这里强行把style.css中的.post-title a都换成了.post-title a, .post-title p-->
+                                    <p class='my_content'>{{diary.diary_log}}</p>
+                                    <a href="{% url 'lenotes:edit_diary_md' diary.id %}" class="ohbut">编辑</a>
+                                    <a href="{% url 'lenotes:single_diary' diary.id %}" class="ohbut">查看</a>
+                                </div>
+                            </div>
+                        </article>
+                        <!--Blog Post-->
+                    {% empty %}
+                        <div style="height: 300px;">
+                            <h3 class="post-title">{{diary.content|custom_markdown}}</h3>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+
+        <!-- .events-content -->
+    
+</div>
+
+{% load static %}
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link href='https://fonts.googleapis.com/css?family=Playfair+Display:700,900|Fira+Sans:400,400italic' rel='stylesheet' type='text/css'>
+
+<link rel="stylesheet" href="{% static 'css/diary_style.css' %}">
+<!-- Resource style -->
+<script src="{% static 'js/modernizr.js' %}"></script>
+<!-- Modernizr -->
+<script src="{% static 'js/jquery-2.1.4.js' %}"></script>
+<script src="{% static 'js/jquery.mobile.custom.min.js' %}"></script>
+<script src="{% static 'js/diary_main.js' %}"></script>
+<!-- Resource jQuery -->
+
+{% endblock content %}

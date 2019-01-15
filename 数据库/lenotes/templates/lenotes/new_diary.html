@@ -1,0 +1,32 @@
+{% extends "lenotes/base.html" %} {% load bootstrap3 %} {% block header %}
+{% endblock header %} {% block content %}
+<style>
+    .ohbut {
+    display: inline-block;
+    padding: .3em .5em;
+    background-image: linear-gradient(#ddd, #bbb);
+    border: 1px solid rgba(0,0,0,.2);
+    border-radius: .3em;
+    box-shadow: 0 1px white inset;
+    text-align: center;
+    text-shadow: 0 1px 1px black;
+    color:rgb(8, 250, 137);
+    font-weight: bold;
+}
+.ohbut:active{
+    box-shadow: .05em .1em .2em rgba(6, 240, 95, 0.6) inset;
+    border-color: rgba(250, 5, 5, 0.3);
+    background: rgb(7, 84, 228);
+}
+
+
+
+</style>
+<h4>Create a new Diary:</h4>
+
+<form action="{% url 'lenotes:new_diary' group.id %}" method='post' class="form">
+
+    {% csrf_token %} {% bootstrap_form form %} {% buttons %}
+    <button name="submit" class="ohbut">Create diary</button> {% endbuttons %}
+    <a href="{% url 'lenotes:group' group.id %}" class="ohbut" >返回小组</a>
+</form>{{ form.media }} {% endblock content %}

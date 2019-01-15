@@ -1,0 +1,37 @@
+{% extends "lenotes/base.html" %} {% load bootstrap3 %} {% block header %}
+{% endblock header %} {% block content %}
+
+<style>
+    .ohbut {
+    display: inline-block;
+    padding: .3em .5em;
+    background-image: linear-gradient(#ddd, #bbb);
+    border: 1px solid rgba(0,0,0,.2);
+    border-radius: .3em;
+    box-shadow: 0 1px white inset;
+    text-align: center;
+    text-shadow: 0 1px 1px black;
+    color:rgb(8, 250, 137);
+    font-weight: bold;
+}
+.ohbut:active{
+    box-shadow: .05em .1em .2em rgba(6, 240, 95, 0.6) inset;
+    border-color: rgba(250, 5, 5, 0.3);
+    background: rgb(7, 84, 228);
+}
+
+</style>
+
+<form action="{% url 'users:send_message' %}" method="POST" class="form">{% csrf_token %}
+
+    <div class="form-group">
+        <label for="receiver_id">接受者用户名</label>
+        <input type="text"  name="receiver_id">
+        <p></p>
+        <label for="content">发送内容</label>
+        <input type="text"  name="content">
+    </div>
+    <button type="submit" class="ohbut">发送</button>
+</form>
+
+{% endblock content %}

@@ -1,0 +1,39 @@
+{% extends 'lenotes/base.html' %} {% load bootstrap3 %}{% load staticfiles %}{% load base %} {% block header %}
+{% endblock header %}
+{% block content %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+
+<!-- 
+<p>日期 {{diary.date_added|date:'d/m/Y'}}</p>
+<div style="width: 1200px; font-family:'Fira Sans'">
+    {{diary.content|custom_markdown}}
+    <br/>
+    -- <a href="{% url 'lenotes:diary_log' diary.id %}" class="btn btn-default">Diary log</a> --
+</div> -->
+
+<section class="row content-wrap">
+    <div class="container">
+        <div class="row">
+            <article class="single-post-content row m0 post post-masonry post-format-image" style = "background:white">
+                
+                
+                <div class="post-content row post-wrapper post-excerpt"  style = "background:white">
+                        <header class="row">                        
+                                <h5 class="post-meta">
+                                    <a href="#" class="date">{{diary.date_added|date:'d/m/Y'}}</a>
+                                    <span class="post-author"><i>in group</i><a href="#">{{ group.name }}</a></span>
+                                </h5>
+                            </header>
+                    {{diary.content|custom_markdown}}
+                    <br/>
+                </div>
+                                            
+            </article>
+        </div>
+    </div>
+</section>
+
+
+{% endblock content %}

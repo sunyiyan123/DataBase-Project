@@ -1,0 +1,126 @@
+{% extends 'lenotes/base.html' %} {% load bootstrap3 %}{% load staticfiles %}{% load base %} {% block header %}
+
+{% endblock header %} {% block content %}
+
+<style>
+    .ohbut {
+    display: inline-block;
+    padding: .3em .5em;
+    background-image: linear-gradient(#ddd, #bbb);
+    border: 1px solid rgba(0,0,0,.2);
+    border-radius: .3em;
+    box-shadow: 0 1px white inset;
+    text-align: center;
+   
+    color:rgb(8, 108, 240);
+    font-weight: bold;
+}
+.ohbut:active{
+    box-shadow: .05em .1em .2em rgba(6, 240, 95, 0.6) inset;
+    border-color: rgba(250, 5, 5, 0.3);
+    background: rgb(7, 84, 228);
+}
+
+</style>
+
+
+<li>
+    <a class="ohbut" href="{% url 'lenotes:diary_month' group.id nowYear nowMonth 1 %}" role="button">切换群日记</a>
+    {% if lastMonthJudge %}
+    <a href="{% url 'lenotes:diary_month' group.id lastYear lastMonth 2 %}" class="ohbut">上个月</a> {% endif %} 
+    {% if nextMonthJudge %}
+    <a href="{% url 'lenotes:diary_month' group.id nextYear nextMonth 2 %}" class="ohbut">下个月</a> {% endif %} 
+    {% if createJudge %}
+    <a href="{% url 'lenotes:new_diary' group.id %}" class="ohbut">新建日记</a> {% endif %}
+</li>
+
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link href='https://fonts.googleapis.com/css?family=Playfair+Display:700,900|Fira+Sans:400,400italic' rel='stylesheet' type='text/css'> {% load static %}
+
+<link rel="stylesheet" href="{% static 'css/diary_style.css' %}">
+<!-- Resource style -->
+<script src="{% static 'js/modernizr.js' %}"></script>
+<!-- Modernizr -->
+<script src="{% static 'js/jquery-2.1.4.js' %}"></script>
+<script src="{% static 'js/jquery.mobile.custom.min.js' %}"></script>
+<script src="{% static 'js/diary_main.js' %}"></script>
+<!-- Resource jQuery -->
+
+<div>
+    
+        <!-- <div class="timeline">
+            <div class="events-wrapper">
+                <div class="events">
+                    <ol>
+                        {% for diary in odiarys %} {% if forloop.last %}
+                        <li><a href="#0" data-date="{{diary.date_added|date:'d/m/Y'}}" class="selected">{{diary.date_added|date:'m.d'}}</a></li>
+                        {% else %}
+                        <li><a href="#0" data-date="{{diary.date_added|date:'d/m/Y'}}">{{diary.date_added|date:'m.d'}}</a></li>
+                        {% endif %} {% empty %}
+                        <li>
+                            <a data-date="01/02/2013" class="selected"></a>
+                            <li>
+                                {% endfor %}
+                    </ol>
+
+                    <span class="filling-line" aria-hidden="true"></span>
+                </div>
+                
+            </div>
+        
+
+            <ul class="cd-timeline-navigation">
+                <li><a href="#0" class="prev inactive">Prev</a></li>
+                <li><a href="#0" class="next">Next</a></li>
+            </ul>
+            
+        </div> -->
+        <!-- .timeline -->
+
+        <div >
+            <ol>
+
+                {% for diary in odiarys %}
+                <li data-date="{{diary.date_added|date:'d/m/Y'}}">
+                    <p></p>
+                    <p></p>
+                    <br/>
+                    <p style='font-family: "Arial","Microsoft YaHei","黑体","宋体",sans-serif;'>日期: {{diary.date_added|date:'d/m/Y'}}</p>
+                    <a href="{% url 'lenotes:edit_diary' group.id diary.id %}" class="ohbut">编辑</a>
+                    <div id="MainContent" style="position: relative; height: 600px; border:6px outset; border-color:yellowgreen">
+                        {% for tex in diary.textele_set.all %}
+                        <div id="tex{{tex.id}}" style="position: absolute; left: {{tex.x}}px;  top: {{tex.y}}px; z-index:{{tex.zindex}};
+                    font-size: {{tex.fontsize}}px; color: {{tex.fontcolor}}; 
+                    ">{{tex.content}}</div>
+                        {% endfor %} {% for pic in diary.imgele_set.all %}
+                        <div id="pic{{pic.id}}" style="position: absolute; left: {{pic.x}}px;  
+                    width: {{pic.w}}px; height: {{pic.h}}px; z-index: {{pic.zindex}};
+                    top: {{pic.y}}px;"><img src="/media/{{pic.img}}" style="width: 100%; height:100%; " alt=""></div>
+                        {% endfor %}
+                    </div>
+                    <br/>
+                    
+                </li>
+                
+                {% empty %}
+                <li class="selected">
+                    <div style="height: 300px;">
+                        这个月没日记哦·····
+                    </div>
+                </li>
+                {% endfor %}
+
+
+            </ol>
+        </div>
+        <!-- .events-content -->
+
+        {% if createJudge %}
+</div>
+<p>
+   
+</p>
+
+{% endif %} {% endblock content %}

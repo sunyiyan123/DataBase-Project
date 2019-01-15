@@ -1,0 +1,56 @@
+{% extends "lenotes/base.html" %} {% block header %} {% load static %}
+<html>
+
+<head>
+    <title>Home</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/homestyle.css' %}">
+    <script type="text/javascript" src="{% static 'js/jquery-1.11.1.min.js' %}"></script>
+
+</head>
+
+<body class="home">
+    <div style="text-align: center; margin-bottom: 30px;">
+        <h3 class="post-title">LATEST BLOGS</h3>
+        <p>Out believe has request not how comfort evident. Up delight cousins we feeling<br>minutes. Genius has looked end piqued spring.</p>
+    </div>
+    <section class="row content-wrap">
+        <div class="container">
+            <div class="row" id="post-masonry">
+                {% for group in groups %}
+                    <!--Blog Post-->
+                    <article class="col-sm-4 post post-masonry post-format-image">
+                        <div class="post-wrapper row">
+                            <div class="featured-content row">
+                                    <a href="{% url 'lenotes:group' group.id %} "><img src="/media/{{group.profile}}" alt=" " class="img-responsive" />
+                                    </a>
+                            </div>
+                            <div class="post-excerpt row">
+                                <h3 class="post-title"><a href="{% url 'lenotes:group' group.id %} ">{{ group.name }}</a></h3>
+                                <p class='my_content'>{{ group.intro }}</p>
+                                <a class="btn btn-default" href="{% url 'lenotes:manage' group.id %}" role="button">管理</a>
+                            </div>
+                            
+                        </div>
+                    </article>
+                    
+                    <!--Blog Post-->
+                {% endfor %}
+                <div class="clearfix"> </div>
+                </div>
+                <br/>
+                <br/>
+                <a href="{% url 'lenotes:new_group' %} " class="site-button" style = "color:black">创建群组</a>
+                <br/>
+                <br/>
+                    
+                
+            </div>
+        </div>
+    </section>
+</body>
+
+
+</html>
+
+{% endblock %}

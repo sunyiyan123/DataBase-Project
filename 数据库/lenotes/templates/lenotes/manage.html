@@ -1,0 +1,102 @@
+{% extends "lenotes/base.html" %} {% load widget_tweaks %} {% block title %}管理群组{% endblock title %} {% block content %}
+
+<style>
+    .ohbut {
+    display: inline-block;
+    padding: .3em .5em;
+    background-image: linear-gradient(#ddd, #bbb);
+    border: 1px solid rgba(0,0,0,.2);
+    border-radius: .3em;
+    box-shadow: 0 1px white inset;
+    text-align: center;
+   
+    color:rgb(12, 86, 245);
+    font-weight: bold;
+}
+.ohbut-dan {
+    display: inline-block;
+    padding: .3em .5em;
+    background-image: linear-gradient(rgb(248, 8, 8), rgb(247, 10, 10));
+    border: 1px solid rgba(0,0,0,.2);
+    border-radius: .3em;
+    box-shadow: 0 1px white inset;
+    text-align: center;
+    text-shadow: 0 1px 1px black;
+    color:rgb(223, 226, 233);
+    font-weight: bold;
+}
+.ohbut:active{
+    box-shadow: .05em .1em .2em rgba(6, 240, 95, 0.6) inset;
+    border-color: rgba(250, 5, 5, 0.3);
+    background: rgb(7, 84, 228);
+}
+
+</style>
+
+<div class="section">
+    <form action="{% url 'lenotes:manage' group.id %}" enctype="multipart/form-data" method='post' novalidate class="myforms">
+        {% csrf_token %}
+        
+        <hr/> {% include 'lenotes/forms/group_form.html' %}
+
+        <script type="text/javascript">
+            function delGroupConfirm() {
+                event.returnValue = confirm("Are you sure to delete this group?")
+            }
+
+            function quitGroupConfirm() {
+                event.returnValue = confirm("Are you sure to quit this group?")
+            }
+
+            function delMemberConfirm() {
+                event.returnValue = confirm("Are you sure to delete this member?")
+            }
+        </script>
+
+        
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>用户名</th>
+                    <th>介绍</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for info in memberInfos %}
+                <tr>
+                    {% if group.owner == info.user %}
+                    <td style="color: red">{{ info.name }} (群组管理员)</td>
+                    {% elif request.user == info.user %}
+                    <td>{{ info.name }} </td>
+                    {% else %}
+                    <td>{{ info.name }}</td>
+                    {% endif %}
+                    <td>{{ info.intro }}</td>
+                    {% ifequal group.owner request.user %} {% ifnotequal group.owner info.user %}
+                    <td>
+                        <a href="{% url 'lenotes:del_member' group.id info.id %}" onclick="delMemberConfirm()" title="Delete">
+                            <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                        </a>
+                    </td>
+                    {% endifnotequal %} {% endifequal %} 
+                </tr>
+                {% empty %}
+                <li>Only you and no other Member.</li>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        {% ifequal group.owner request.user %}
+        <a href="{% url 'lenotes:send_invite' group.id %}" class="ohbut">邀请新成员</a> {% endifequal %}
+        {% ifequal group.owner request.user %}
+        <a href="{% url 'lenotes:del_group' group.id %}" class="ohbut-dan" onclick="delGroupConfirm()">删除小组!</a> 
+        {% else %}
+        <a href="{% url 'users:quit_group' group.id %}" class="ohbut-dan" onclick="quitGroupConfirm()">退出小组</a> 
+        {% endifequal %}
+        <p></p>
+            <button name="submit" class="ohbut">保存</button>
+            <a class="ohbut" href="/">返回</a>
+        
+    </form>
+</div>
+{% endblock content %}

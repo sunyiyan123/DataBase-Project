@@ -1,0 +1,159 @@
+{% extends "lenotes/base.html" %} {% block header %}
+
+{% endblock %} {% block content %}
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/homestyle.css' %}">
+
+
+{% for message in messages %}
+<article class="col-sm-4 post post-masonry post-format-image">
+    <div class="post-wrapper row">
+        <div class="featured-content row">
+                
+        </div>
+        <div class="post-excerpt row">
+                <p>消息</p>
+            <h3 class="post-title">{{ message.sender }},{{ message.date_added|date:'M d, Y H:i' }}</h3>
+            <p class='my_content'>{{ message.text }}</p>
+            {% ifequal message.is_Read False %}
+            <a href="{% url 'users:read_message' message.id %}" title="标记已读">
+                <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+            </a>
+            {% else %}
+            <a href="{% url 'users:del_message' message.id %}" title="删除">
+                <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+            </a>
+            {% endifequal %}
+        </div>
+        
+    </div>
+</article>
+{% empty %}
+
+<p>暂无消息</p>
+
+{% endfor %}
+
+
+
+
+<!-- <table class="table table-hover">
+    <thead>
+        <tr>
+            <th>消息</th>
+            <th>发送者</th>
+            <th>内容</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for message in messages %} {% ifequal message.is_Read False %}
+        <tr class="info">
+            <td>{{ message.date_added|date:'M d, Y H:i' }}</td>
+            <td>{{ message.sender }}</td>
+            <td>{{ message.text }}</td>
+            <td>
+                <a href="{% url 'users:read_message' message.id %}" title="Comfire">
+                    <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                </a>
+            </td>
+
+        </tr>
+        {% else %}
+        <tr>
+            <td>{{ message.date_added|date:'M d, Y H:i' }}</td>
+            <td>{{ message.sender }}</td>
+            <td>{{ message.text }}</td>
+            <td>
+                <a href="{% url 'users:del_message' message.id %}" title="Delete">
+                    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                </a>
+
+            </td>
+        </tr>
+        {% endifequal %} {% empty %}
+        <tr>
+            <td>暂无消息.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table> -->
+
+{% for invitation in invitations %}
+<article class="col-sm-4 post post-masonry post-format-image">
+    <div class="post-wrapper row">
+        <div class="featured-content row">
+            
+        </div>
+        <div class="post-excerpt row">
+            <p>邀请</p>
+            <h3 class="post-title">{{ invitation.date_added|date:'M d, Y H:i' }}</h3>
+            <p class='my_content'>{{ invitation.message }}</p>
+            {% ifequal invitation.is_Read False %}
+            <a href="{% url 'users:deal_invi' invitation.id 1 %}" title="接受">
+                <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+            </a>
+            <a href="{% url 'users:deal_invi' invitation.id 0 %}" title="拒绝">
+                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+            </a>
+            {% else %}
+            <a href="{% url 'users:del_invi' invitation.id %}" title="删除">
+                <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+            </a>
+            {% endifequal %}
+        </div>
+        
+    </div>
+</article>
+{% empty %}
+
+<!-- <p>暂无邀请</p> -->
+
+{% endfor %}
+
+</div>
+
+<!-- 
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>邀请</th>
+            <th>内容</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for invitation in invitations %} {% ifequal invitation.is_Read False %}
+        <tr class="info">
+            <td>{{ invitation.date_added|date:'M d, Y H:i' }}</td>
+            <td>{{ invitation.message }}</td>
+            <td>
+                <a href="{% url 'users:deal_invi' invitation.id 1 %}" title="Accept">
+                    <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                </a>
+            </td>
+            <td>
+                <a href="{% url 'users:deal_invi' invitation.id 0 %}" title="Refuse">
+                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                </a>
+            </td>
+        </tr>
+        {% else %}
+        <tr>
+            <td>{{ invitation.date_added|date:'M d, Y H:i' }}</td>
+            <td>{{ invitation.message }}</td>
+            <td>
+                <a href="{% url 'users:del_invi' invitation.id %}" title="Delete">
+                    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                </a>
+            </td>
+        </tr>
+        {% endifequal %} {% empty %}
+        <tr>
+            <td>暂无邀请.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table> -->
+
+<!-- <h4><a href="{% url 'users:home' %}" class="btn btn-default">返回</a></h4> -->
+
+{% endblock content %}

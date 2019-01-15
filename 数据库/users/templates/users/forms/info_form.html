@@ -1,0 +1,55 @@
+{% load widget_tweaks %} 
+{% for field in info_form %}
+<style>
+  .myf {
+    /* padding: 0.4em 0.25em;
+    width: 100%;
+    background: transparent;
+    color: rgb(12, 128, 243);
+    font-size: 1.55em; */
+    font: 15px/36px "Muli", sans-serif;
+    padding: 0;
+    border: none;
+    border-radius: 0;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    border-bottom: 2px solid #f5f4f4;
+    height: 38px;
+    position: relative;
+    background: none;
+}
+</style>
+
+<div class="form-group">
+    <span style="color:blue">
+		{{ field.label }}
+	</span> {{ field | add_class:"myf"}}
+    <p class="error-message text-danger">
+        {% for error in field.errors %} {{ error }} {% endfor %}
+    </p>
+</div>
+ 
+{% endfor %} {{ info_form.media }}
+
+<div class="form-group">
+    <span>头像</span>
+    <input type="file" name="profile" class="myf" onchange="previewFile()" />
+</div>
+<img src="" height="200" alt="缩略图">
+<script>
+    function previewFile() {
+  var preview = document.querySelector('img');
+  var file    = document.querySelector('input[type=file]').files[0];
+  var reader  = new FileReader();
+
+  reader.onloadend = function () {
+    preview.src = reader.result;
+  }
+
+  if (file) {
+    reader.readAsDataURL(file);
+  } else {
+    preview.src = "";
+  }
+}
+</script>

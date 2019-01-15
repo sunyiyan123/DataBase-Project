@@ -1,0 +1,43 @@
+{% extends "lenotes/base.html" %} {% load widget_tweaks %} {% block title %}Register{% endblock title %} {% block content %} {% load static %}
+<link rel="stylesheet" href="{% static 'css/register.css' %}">
+
+<style>
+        .ohbut {
+        display: inline-block;
+        padding: .3em .5em;
+        background-image: linear-gradient(rgb(250, 249, 249), rgb(250, 246, 246));
+        border: 1px solid rgba(0,0,0,.2);
+        border-radius: .3em;
+        box-shadow: 0 1px white inset;
+        text-align: center;
+       
+        color:rgb(8, 108, 240);
+        font-weight: bold;
+    }
+    .ohbut:active{
+        box-shadow: .05em .1em .2em rgba(6, 240, 95, 0.6) inset;
+        border-color: rgba(250, 5, 5, 0.3);
+        background: rgb(7, 84, 228);
+    }
+    
+</style>
+
+<div class="section">
+    <form class="form-users" method="post" enctype="multipart/form-data" action="{% url 'users:register' %}">
+        {% csrf_token %}
+        
+        <hr>
+        <div class="form-group form-register">
+            {% include 'users/forms/user_form.html' %} {% include 'users/forms/info_form.html' %}
+        </div>
+        <div style="text-align: center">
+            <button name="submit" class="ohbut">注册</button>
+            <a class="ohbut" href="/">返回</a>
+        </div>
+        <input type="hidden" name="next" value="{% url 'lenotes:index' %}" />
+    </form>
+    <div style="text-align: center">
+        <p>已有账户? <a href="{% url 'users:login' %}">点此</a> 登录.</p>
+    </div>
+</div>
+{% endblock content %}
